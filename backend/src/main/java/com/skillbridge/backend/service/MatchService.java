@@ -94,6 +94,7 @@ public class MatchService {
 
         int matchScore = skillsScore + locationScore + interestScore;
         String reason = buildMatchReason(matchScore, matchedSkills, missingSkills, locationScore, interestScore);
+        List<String> learningRoadmap = buildLearningRoadmap(missingSkills);
         return new MatchResult(
                 student.getId(),
                 opportunity.getId(),
@@ -107,7 +108,7 @@ public class MatchService {
                 locationScore,
                 interestScore,
                 matchedSkills,
-                missingSkills, reason);
+                missingSkills, reason, learningRoadmap);
     }
 
     private String buildMatchReason(int matchScore, List<String> matchedSkills, List<String> missingSkills,
@@ -132,5 +133,29 @@ public class MatchService {
         }
 
         return reason;
+    }
+
+    private List<String> buildLearningRoadmap(List<String> missingSkills) {
+        List<String> roadmap = new ArrayList<>();
+
+        for (String skill : missingSkills) {
+            roadmap.add("Learn the basics of " + skill);
+            roadmap.add("Build a small project using " + skill);
+            roadmap.add("Add " + skill + " to your portfolio");
+        }
+
+        return roadmap;
+    }
+
+    private List<String> buildLearningRoadmap(List<String> missingSkills) {
+        List<String> roadmap = new ArrayList<>();
+
+        for (String skill : missingSkills) {
+            roadmap.add("Learn the basics of " + skill);
+            roadmap.add("Build a small project using " + skill);
+            roadmap.add("Add " + skill + " to your portfolio");
+        }
+
+        return roadmap;
     }
 }
