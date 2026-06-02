@@ -1,4 +1,7 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.controller;
+
+import com.skillbridge.backend.service.StudentService;
+import com.skillbridge.backend.model.Student;
 
 import org.springframework.web.bind.annotation.*;
 

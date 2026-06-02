@@ -1,4 +1,7 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.controller;
+
+import com.skillbridge.backend.service.MatchService;
+import com.skillbridge.backend.dto.MatchResult;
 
 import org.springframework.web.bind.annotation.*;
 

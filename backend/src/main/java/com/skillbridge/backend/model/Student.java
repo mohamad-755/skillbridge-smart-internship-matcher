@@ -1,4 +1,4 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.model;
 
 import java.util.List;
 
