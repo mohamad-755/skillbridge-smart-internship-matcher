@@ -17,6 +17,7 @@ public class MatchResult {
     private List<String> matchedSkills;
     private List<String> missingSkills;
     private String reason;
+    private List<String> learningRoadmap;
 
     public MatchResult() {
     }
@@ -25,7 +26,7 @@ public class MatchResult {
             String organization, String category, String location,
             String deadline, int matchScore, int skillsScore,
             int locationScore, int interestScore,
-            List<String> matchedSkills, List<String> missingSkills, String reason) {
+            List<String> matchedSkills, List<String> missingSkills, String reason, List<String> learningRoadmap) {
         this.studentId = studentId;
         this.opportunityId = opportunityId;
         this.opportunityTitle = opportunityTitle;
@@ -40,6 +41,7 @@ public class MatchResult {
         this.matchedSkills = matchedSkills;
         this.missingSkills = missingSkills;
         this.reason = reason;
+        this.learningRoadmap = learningRoadmap;
     }
 
     public int getSkillsScore() {
@@ -152,5 +154,13 @@ public class MatchResult {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public List<String> getLearningRoadmap() {
+        return learningRoadmap;
+    }
+
+    public void setLearningRoadmap(List<String> learningRoadmap) {
+        this.learningRoadmap = learningRoadmap;
     }
 }
