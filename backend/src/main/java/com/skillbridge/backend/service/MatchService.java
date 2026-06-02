@@ -93,7 +93,7 @@ public class MatchService {
         }
 
         int matchScore = skillsScore + locationScore + interestScore;
-
+        String reason = buildMatchReason(matchScore, matchedSkills, missingSkills, locationScore, interestScore);
         return new MatchResult(
                 student.getId(),
                 opportunity.getId(),
@@ -107,6 +107,30 @@ public class MatchService {
                 locationScore,
                 interestScore,
                 matchedSkills,
-                missingSkills);
+                missingSkills, reason);
+    }
+
+    private String buildMatchReason(int matchScore, List<String> matchedSkills, List<String> missingSkills,
+            int locationScore, int interestScore) {
+
+        String reason = "This opportunity is a " + matchScore + "% match. ";
+
+        if (!matchedSkills.isEmpty()) {
+            reason += "You already match key skills: " + String.join(", ", matchedSkills) + ". ";
+        }
+
+        if (!missingSkills.isEmpty()) {
+            reason += "To become stronger, improve: " + String.join(", ", missingSkills) + ". ";
+        }
+
+        if (locationScore > 0) {
+            reason += "The location also fits your preference. ";
+        }
+
+        if (interestScore > 0) {
+            reason += "It also matches your interests.";
+        }
+
+        return reason;
     }
 }
