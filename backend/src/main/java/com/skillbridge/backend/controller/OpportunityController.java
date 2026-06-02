@@ -1,7 +1,8 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.controller;
 
 import org.springframework.web.bind.annotation.*;
-
+import com.skillbridge.backend.model.Opportunity;
+import com.skillbridge.backend.service.OpportunityService;
 import java.util.List;
 
 @RestController

@@ -1,4 +1,6 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.service;
+
+import com.skillbridge.backend.model.Opportunity;
 
 import org.springframework.stereotype.Service;
 

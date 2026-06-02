@@ -1,4 +1,4 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.dto;
 
 import java.util.List;
 
@@ -50,6 +50,14 @@ public class MatchResult {
 
     public int getLocationScore() {
         return locationScore;
+    }
+
+    public void setInterestScore(int interestScore) {
+        this.interestScore = interestScore;
+    }
+
+    public int getInterestScore() {
+        return interestScore;
     }
 
     public void setLocationScore(int locationScore) {

@@ -1,4 +1,8 @@
-package com.skillbridge.backend;
+package com.skillbridge.backend.service;
+
+import com.skillbridge.backend.model.Student;
+import com.skillbridge.backend.model.Opportunity;
+import com.skillbridge.backend.dto.MatchResult;
 
 import org.springframework.stereotype.Service;
 
