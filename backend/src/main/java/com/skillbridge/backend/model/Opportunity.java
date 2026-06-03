@@ -1,15 +1,23 @@
 package com.skillbridge.backend.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
 public class Opportunity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String title;
     private String organization;
     private String category;
     private String location;
     private String deadline;
     private String description;
+
+    @ElementCollection
     private List<String> requiredSkills;
 
     public Opportunity() {
