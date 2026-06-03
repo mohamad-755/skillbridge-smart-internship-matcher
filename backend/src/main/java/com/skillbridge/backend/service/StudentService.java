@@ -1,43 +1,28 @@
 package com.skillbridge.backend.service;
 
 import com.skillbridge.backend.model.Student;
-
+import com.skillbridge.backend.repository.StudentRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class StudentService {
 
-    private List<Student> students = new ArrayList<>();
+    private final StudentRepository studentRepository;
 
-    public StudentService() {
-        students.add(new Student(1, "Hussein", "Computer Science", "Sophomore", "Beirut",
-                Arrays.asList("Java", "Python", "Git"),
-                Arrays.asList("Backend", "AI", "Internship")));
-        students.add(new Student(2, "Rawad", "Computer Science", "Sophomore", "Beirut",
-                Arrays.asList("Java", "SQL", "React"),
-                Arrays.asList("Frontend", "Volunteering", "Internship")));
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     public List<Student> getAllStudents() {
-        return students;
+        return studentRepository.findAll();
     }
 
     public Student getStudentById(int id) {
-        for (Student student : students) {
-            if (student.getId() == id) {
-                return student;
-            }
-        }
-
-        return null;
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student addStudent(Student student) {
-        students.add(student);
-        return student;
+        return studentRepository.save(student);
     }
 }
