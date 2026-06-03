@@ -147,15 +147,4 @@ public class MatchService {
         return roadmap;
     }
 
-    private List<String> buildLearningRoadmap(List<String> missingSkills) {
-        List<String> roadmap = new ArrayList<>();
-
-        for (String skill : missingSkills) {
-            roadmap.add("Learn the basics of " + skill);
-            roadmap.add("Build a small project using " + skill);
-            roadmap.add("Add " + skill + " to your portfolio");
-        }
-
-        return roadmap;
-    }
 }
