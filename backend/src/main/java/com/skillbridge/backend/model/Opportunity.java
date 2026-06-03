@@ -8,7 +8,7 @@ public class Opportunity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String title;
     private String organization;
@@ -23,7 +23,7 @@ public class Opportunity {
     public Opportunity() {
     }
 
-    public Opportunity(int id, String title, String organization, String category,
+    public Opportunity(Integer id, String title, String organization, String category,
             String location, String deadline, String description,
             List<String> requiredSkills) {
         this.id = id;
@@ -36,11 +36,11 @@ public class Opportunity {
         this.requiredSkills = requiredSkills;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

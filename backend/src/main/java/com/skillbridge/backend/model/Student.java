@@ -8,7 +8,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
     private String major;
@@ -24,7 +24,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(int id, String name, String major, String academicYear, String location,
+    public Student(Integer id, String name, String major, String academicYear, String location,
             List<String> skills, List<String> interests) {
         this.id = id;
         this.name = name;
@@ -35,11 +35,11 @@ public class Student {
         this.interests = interests;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
