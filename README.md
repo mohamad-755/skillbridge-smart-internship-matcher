@@ -1,46 +1,167 @@
-# SkillBridge
+# SkillBridge — Smart Internship Matcher
 
-SkillBridge is a smart opportunity-matching platform for students.
+> An intelligent backend platform that matches students with internships based on skills, interests, location, and career goals.
 
-The platform helps students discover internships, scholarships, volunteering programs, bootcamps, and competitions based on their skills, interests, location, academic year, and goals.
+---
 
-## Problem
+## The Problem
 
-Many students struggle to find opportunities that match their profile. They often miss deadlines, apply to random programs, or do not know which skills they are missing.
+Many students don't know:
+- Which internships actually fit them
+- Why they get rejected
+- What skills they are missing
+- How to prepare and where to focus
 
-## Solution
+## The Solution
 
-SkillBridge recommends opportunities to students using a custom matching algorithm. The system compares the student's skills, interests, location, academic year, and opportunity requirements, then gives a match score.
+SkillBridge analyzes a student's profile and returns:
+- A match score for every opportunity
+- An explanation of why they match
+- A list of missing skills
+- A personalized learning roadmap
 
-## Main Features
+---
 
-- Student profile
-- Opportunity listing
-- Skills and interests
-- Match percentage
-- Recommended opportunities
-- Missing skills suggestions
-- Saved opportunities
-- Application tracker
-- Admin dashboard
+## Example
+
+**Student profile:**
+- Skills: Java, Git, OOP, Data Structures
+- Interests: Backend, AI
+- Location: Beirut
+
+**Internship requires:** Java, Spring Boot, Docker, Git
+
+**SkillBridge returns:**
+- Match Score: 76%
+- Matched Skills: Java, Git
+- Missing Skills: Spring Boot, Docker
+- Reason: Strong match — you have Java and Git but need Spring Boot and Docker
+- Learning Roadmap: Learn Spring Boot → Build a REST API → Learn Docker → Dockerize your app
+
+---
 
 ## Tech Stack
 
-Frontend:
-- React
+| Layer | Technology |
+|---|---|
+| Language | Java 17 |
+| Framework | Spring Boot 4 |
+| Database | H2 (in-memory) |
+| ORM | Spring Data JPA / Hibernate |
+| Testing | JUnit 5 + Mockito |
+| API Docs | Swagger UI (springdoc-openapi) |
+| Build Tool | Maven |
+| Containerization | Docker |
+| Version Control | Git + GitHub Flow |
 
-Backend:
-- FastAPI
+---
 
-Database:
-- PostgreSQL / Supabase
+## Features
 
-Future Features:
-- CV skill extraction
-- Email reminders
-- Analytics dashboard
-- AI-powered recommendations
+- Student profile management
+- Internship opportunity catalog
+- Skill gap analysis (matched vs missing skills)
+- Match score calculation (skills + location + interests)
+- Learning roadmap generator for missing skills
+- Batch matcher — ranks all opportunities for a student
+- Auto-generated API documentation via Swagger UI
 
-## Project Status
+---
 
-This project is currently under development.
+## Project Structure
+
+skillbridge-smart-internship-matcher/
+├── backend/               # Spring Boot backend
+│   ├── src/
+│   │   ├── main/java/com/skillbridge/backend/
+│   │   │   ├── controller/    # REST endpoints
+│   │   │   ├── service/       # Business logic
+│   │   │   ├── repository/    # Database access
+│   │   │   ├── model/         # JPA entities
+│   │   │   ├── dto/           # Data transfer objects
+│   │   │   └── exception/     # Exception handling
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── data.sql       # Seed data
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── PROJECT_PLAN.md
+└── DATABASE-PLAN.md
+
+---
+
+## Getting Started
+
+### Run locally
+
+```bash
+git clone https://github.com/mohamad-755/skillbridge-smart-internship-matcher.git
+cd skillbridge-smart-internship-matcher/backend
+./mvnw spring-boot:run
+```
+
+### Run with Docker
+
+```bash
+cd backend
+docker-compose up
+```
+
+---
+
+## API Documentation
+
+Once running, open: http://localhost:8080/swagger-ui.html
+
+---
+
+## API Endpoints
+
+### Students
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /students | Get all students |
+| GET | /students/{id} | Get student by ID |
+| POST | /students | Add a new student |
+
+### Opportunities
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /opportunities | Get all opportunities |
+| GET | /opportunities/{id} | Get opportunity by ID |
+| POST | /opportunities | Add a new opportunity |
+| GET | /opportunities/search?keyword= | Search opportunities |
+| GET | /opportunities/filter?category=&location= | Filter opportunities |
+| GET | /opportunities/sort?by= | Sort opportunities |
+
+### Matching
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /match/{studentId}/{opportunityId} | Match student with one opportunity |
+| GET | /match/{studentId}/all | Rank all opportunities for a student |
+
+---
+
+## Running Tests
+
+```bash
+cd backend
+./mvnw test
+```
+
+---
+
+## GitHub Flow
+
+This project follows GitHub Flow:
+- All features developed in `feature/*` branches
+- Pull Requests required before merging to `main`
+- CI pipeline runs on every push via GitHub Actions
+
+---
+
+## Author
+
+Mohamad — Computer Science student at the American University of Beirut (AUB)
+
+Built as part of the MLH Fellowship application.
