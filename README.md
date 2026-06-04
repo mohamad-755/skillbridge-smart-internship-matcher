@@ -70,23 +70,25 @@ SkillBridge analyzes a student's profile and returns:
 
 ## Project Structure
 
+```
 skillbridge-smart-internship-matcher/
-├── backend/               # Spring Boot backend
+├── backend/
 │   ├── src/
 │   │   ├── main/java/com/skillbridge/backend/
-│   │   │   ├── controller/    # REST endpoints
-│   │   │   ├── service/       # Business logic
-│   │   │   ├── repository/    # Database access
-│   │   │   ├── model/         # JPA entities
-│   │   │   ├── dto/           # Data transfer objects
-│   │   │   └── exception/     # Exception handling
+│   │   │   ├── controller/
+│   │   │   ├── service/
+│   │   │   ├── repository/
+│   │   │   ├── model/
+│   │   │   ├── dto/
+│   │   │   └── exception/
 │   │   └── resources/
 │   │       ├── application.properties
-│   │       └── data.sql       # Seed data
+│   │       └── data.sql
 │   ├── Dockerfile
 │   └── docker-compose.yml
 ├── PROJECT_PLAN.md
 └── DATABASE-PLAN.md
+```
 
 ---
 
