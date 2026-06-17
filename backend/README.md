@@ -4,6 +4,19 @@ Spring Boot REST API for the SkillBridge Smart Internship Matcher.
 
 ---
 
+## Live Demo
+
+API is live at:
+
+```
+https://skillbridge-smart-internship-matcher-production.up.railway.app
+```
+
+Swagger UI (interactive API docs):
+```
+https://skillbridge-smart-internship-matcher-production.up.railway.app/swagger-ui.html
+```
+
 ## Prerequisites
 
 - Java 17
