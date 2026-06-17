@@ -10,3 +10,5 @@ INSERT INTO opportunity_required_skills (opportunity_id, required_skills) VALUES
 
 INSERT INTO opportunity (title, organization, category, location, deadline, description) VALUES ('Frontend Volunteer Program', 'CodeForGood', 'Volunteering', 'Beirut', '2026-06-20', 'Volunteer with a tech NGO and help build simple websites.');
 INSERT INTO opportunity_required_skills (opportunity_id, required_skills) VALUES (3, 'HTML'), (3, 'CSS'), (3, 'JavaScript'), (3, 'React');
+
+
