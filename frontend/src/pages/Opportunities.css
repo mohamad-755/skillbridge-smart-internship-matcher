@@ -199,8 +199,12 @@
 }
 
 .error {
-  text-align: center;
-  padding: 20px;
+  background-color: #fff3f3;
+  color: #c0392b;
+  border: 1px solid #f5b7b1;
+  border-radius: 8px;
+  padding: 12px 14px;
   font-size: 14px;
-  color: #e74c3c;
+  text-align: center;
+  margin: 16px 0;
 }

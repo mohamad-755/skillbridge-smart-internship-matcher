@@ -192,8 +192,12 @@
 }
 
 .error {
+  background-color: #fff3f3;
+  color: #c0392b;
+  border: 1px solid #f5b7b1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
   text-align: center;
-  padding: 60px 20px;
-  font-size: 16px;
-  color: #e74c3c;
+  margin: 16px 0;
 }

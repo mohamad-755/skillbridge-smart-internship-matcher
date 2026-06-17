@@ -24,7 +24,7 @@ function Results() {
         const response = await getMatchesForStudent(studentId);
         setResults(response.data);
       } catch (err) {
-        setError('Failed to load matches. Please try again.');
+        setError('We could not load your matches right now. Please refresh the page or try again later.');
       } finally {
         setLoading(false);
       }
