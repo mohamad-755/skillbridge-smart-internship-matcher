@@ -40,7 +40,7 @@ function Home() {
       const studentId = response.data.id;
       navigate('/results', { state: { studentId } });
     } catch (err) {
-      setError('Something went wrong. Please try again.');
+      setError('We could not submit your profile right now. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }

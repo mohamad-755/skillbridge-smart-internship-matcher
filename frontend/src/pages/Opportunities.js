@@ -26,7 +26,7 @@ function Opportunities() {
       const response = await getAllOpportunities();
       setOpportunities(response.data);
     } catch (err) {
-      setError('Failed to load opportunities.');
+      setError('We could not load opportunities right now. Please refresh the page or try again later.');
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ function Opportunities() {
       });
       fetchOpportunities();
     } catch (err) {
-      setError('Failed to add opportunity.');
+      setError('We could not add this opportunity. Please check the details and try again.');
     }
   };
 

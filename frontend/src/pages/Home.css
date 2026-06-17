@@ -63,9 +63,14 @@
 }
 
 .error {
-  color: #e74c3c;
+  background-color: #fff3f3;
+  color: #c0392b;
+  border: 1px solid #f5b7b1;
+  border-radius: 8px;
+  padding: 12px 14px;
   font-size: 14px;
-  margin-bottom: 16px;
+  text-align: center;
+  margin: 16px 0;
 }
 
 button[type="submit"] {
