@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import './App.css';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -19,11 +20,34 @@ function App() {
       <Navbar user={user} setUser={setUser} />
       <div className="container">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute user={user}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/results"
+            element={
+              <ProtectedRoute user={user}>
+                <Results />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/opportunities"
+            element={
+              <ProtectedRoute user={user}>
+                <Opportunities />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>
