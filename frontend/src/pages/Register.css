@@ -1,0 +1,40 @@
+.auth-page {
+  max-width: 520px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card h1 {
+  margin: 0 0 8px;
+  color: #1a1a2e;
+}
+
+.auth-card p {
+  color: #666;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.auth-switch a {
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+}

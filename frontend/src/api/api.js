@@ -23,4 +23,8 @@ export const getMatchesForStudent = (studentId) => api.get(`/match/${studentId}/
 export const matchStudentWithOpportunity = (studentId, opportunityId) => 
   api.get(`/match/${studentId}/${opportunityId}`);
 
+// Auth
+export const registerUser = (data) => api.post('/auth/register', data);
+export const loginUser = (data) => api.post('/auth/login', data);
+
 export default api;

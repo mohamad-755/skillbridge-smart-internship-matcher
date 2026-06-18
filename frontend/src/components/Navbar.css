@@ -5,7 +5,7 @@
   padding: 16px 32px;
   background-color: #1a1a2e;
   color: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-brand a {
@@ -18,6 +18,7 @@
 
 .navbar-links {
   display: flex;
+  align-items: center;
   gap: 24px;
 }
 
@@ -30,4 +31,25 @@
 
 .navbar-links a:hover {
   color: #4ecca3;
+}
+
+.navbar-user {
+  color: #4ecca3;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid #4ecca3;
+  color: #4ecca3;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-btn:hover {
+  background: #4ecca3;
+  color: #1a1a2e;
 }
