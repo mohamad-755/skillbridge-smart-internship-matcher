@@ -5,6 +5,8 @@ import {
   getSavedOpportunities,
   saveOpportunity,
   unsaveOpportunity,
+  createApplication,
+  getApplications,
 } from '../api/api';
 import './Opportunities.css';
 
@@ -24,10 +26,12 @@ function Opportunities() {
   });
   const [savedIds, setSavedIds] = useState([]);
   const user = JSON.parse(localStorage.getItem('skillbridgeUser'));
+  const [appliedIds, setAppliedIds] = useState([]);
 
   useEffect(() => {
     fetchOpportunities();
     fetchSavedOpportunities();
+    fetchApplications();
   }, []);
 
   const fetchOpportunities = async () => {
@@ -96,6 +100,32 @@ function Opportunities() {
       }
     } catch (err) {
       setError('We could not update your saved opportunities. Please try again.');
+    }
+  };
+
+  const handleApply = async (opportunityId) => {
+    if (!user?.id) {
+      setError('Please log in to apply to opportunities.');
+      return;
+    }
+
+    try {
+      await createApplication(user.id, opportunityId);
+      setAppliedIds([...appliedIds, opportunityId]);
+      setError('');
+    } catch (err) {
+      setError('We could not create this application. It may already exist.');
+    }
+  };
+
+  const fetchApplications = async () => {
+    if (!user?.id) return;
+
+    try {
+      const response = await getApplications(user.id);
+      setAppliedIds(response.data.map((item) => item.opportunityId));
+    } catch (err) {
+      setError('We could not load your applications right now.');
     }
   };
 
@@ -168,6 +198,14 @@ function Opportunities() {
                   onClick={() => handleToggleSave(opp.id)}
                 >
                   {savedIds.includes(opp.id) ? 'Saved' : 'Save'}
+                </button>
+
+                <button
+                  className={appliedIds.includes(opp.id) ? 'apply-btn applied' : 'apply-btn'}
+                  onClick={() => handleApply(opp.id)}
+                  disabled={appliedIds.includes(opp.id)}
+                >
+                  {appliedIds.includes(opp.id) ? 'Applied' : 'Apply'}
                 </button>
               </div>
             </div>
