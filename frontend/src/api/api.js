@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://skillbridge-smart-internship-matcher-production.up.railway.app';
+const BASE_URL = 'http://localhost:8080';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -26,5 +26,14 @@ export const matchStudentWithOpportunity = (studentId, opportunityId) =>
 // Auth
 export const registerUser = (data) => api.post('/auth/register', data);
 export const loginUser = (data) => api.post('/auth/login', data);
+
+// Saved Opportunities
+export const getSavedOpportunities = (userId) => api.get(`/saved-opportunities/${userId}`);
+
+export const saveOpportunity = (userId, opportunityId) =>
+  api.post(`/saved-opportunities/${userId}/${opportunityId}`);
+
+export const unsaveOpportunity = (userId, opportunityId) =>
+  api.delete(`/saved-opportunities/${userId}/${opportunityId}`);
 
 export default api;

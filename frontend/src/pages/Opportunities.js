@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getAllOpportunities, createOpportunity } from '../api/api';
+import {
+  getAllOpportunities,
+  createOpportunity,
+  getSavedOpportunities,
+  saveOpportunity,
+  unsaveOpportunity,
+} from '../api/api';
 import './Opportunities.css';
 
 function Opportunities() {
@@ -16,9 +22,12 @@ function Opportunities() {
     description: '',
     requiredSkills: '',
   });
+  const [savedIds, setSavedIds] = useState([]);
+  const user = JSON.parse(localStorage.getItem('skillbridgeUser'));
 
   useEffect(() => {
     fetchOpportunities();
+    fetchSavedOpportunities();
   }, []);
 
   const fetchOpportunities = async () => {
@@ -29,6 +38,17 @@ function Opportunities() {
       setError('We could not load opportunities right now. Please refresh the page or try again later.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSavedOpportunities = async () => {
+    if (!user?.id) return;
+
+    try {
+      const response = await getSavedOpportunities(user.id);
+      setSavedIds(response.data.map((item) => item.opportunityId));
+    } catch (err) {
+      setError('We could not load your saved opportunities right now.');
     }
   };
 
@@ -57,6 +77,25 @@ function Opportunities() {
       fetchOpportunities();
     } catch (err) {
       setError('We could not add this opportunity. Please check the details and try again.');
+    }
+  };
+
+  const handleToggleSave = async (opportunityId) => {
+    if (!user?.id) {
+      setError('Please log in to save opportunities.');
+      return;
+    }
+
+    try {
+      if (savedIds.includes(opportunityId)) {
+        await unsaveOpportunity(user.id, opportunityId);
+        setSavedIds(savedIds.filter((id) => id !== opportunityId));
+      } else {
+        await saveOpportunity(user.id, opportunityId);
+        setSavedIds([...savedIds, opportunityId]);
+      }
+    } catch (err) {
+      setError('We could not update your saved opportunities. Please try again.');
     }
   };
 
@@ -121,7 +160,16 @@ function Opportunities() {
                 <h2>{opp.title}</h2>
                 <p className="opp-org">{opp.organization}</p>
               </div>
-              <span className="opp-category">{opp.category}</span>
+
+              <div className="opp-actions">
+                <span className="opp-category">{opp.category}</span>
+                <button
+                  className={savedIds.includes(opp.id) ? 'save-btn saved' : 'save-btn'}
+                  onClick={() => handleToggleSave(opp.id)}
+                >
+                  {savedIds.includes(opp.id) ? 'Saved' : 'Save'}
+                </button>
+              </div>
             </div>
             <p className="opp-description">{opp.description}</p>
             <div className="opp-footer">
