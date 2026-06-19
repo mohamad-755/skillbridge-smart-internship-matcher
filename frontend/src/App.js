@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
+import SavedOpportunities from './pages/SavedOpportunities';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -45,6 +46,15 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <Opportunities />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/saved"
+            element={
+              <ProtectedRoute user={user}>
+                <SavedOpportunities />
               </ProtectedRoute>
             }
           />
