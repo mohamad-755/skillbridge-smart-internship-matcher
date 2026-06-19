@@ -36,4 +36,17 @@ export const saveOpportunity = (userId, opportunityId) =>
 export const unsaveOpportunity = (userId, opportunityId) =>
   api.delete(`/saved-opportunities/${userId}/${opportunityId}`);
 
+// Applications
+export const createApplication = (userId, opportunityId) =>
+  api.post(`/applications/${userId}/${opportunityId}`);
+
+export const getApplications = (userId) =>
+  api.get(`/applications/${userId}`);
+
+export const updateApplicationStatus = (applicationId, status) =>
+  api.put(`/applications/${applicationId}/status?status=${status}`);
+
+export const deleteApplication = (applicationId) =>
+  api.delete(`/applications/${applicationId}`);
+
 export default api;

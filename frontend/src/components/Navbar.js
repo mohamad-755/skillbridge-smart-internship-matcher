@@ -21,6 +21,7 @@ function Navbar({ user, setUser }) {
         <Link to="/">Find Matches</Link>
         <Link to="/opportunities">Opportunities</Link>
         {user && <Link to="/saved">Saved</Link>}
+        {user && <Link to="/applications">Applications</Link>}
 
         {user ? (
           <>

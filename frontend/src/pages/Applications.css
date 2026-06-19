@@ -1,0 +1,80 @@
+.applications {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.applications-header {
+  margin-bottom: 32px;
+}
+
+.applications-header h1 {
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.applications-header p {
+  color: #666;
+}
+
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.application-card {
+  background: white;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.application-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.application-top h2 {
+  color: #1a1a2e;
+  margin: 0 0 6px;
+}
+
+.application-org {
+  color: #666;
+  margin: 0;
+}
+
+.status-select {
+  min-width: 160px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: #1a1a2e;
+  font-size: 14px;
+  height: fit-content;
+}
+
+.application-meta {
+  display: flex;
+  gap: 16px;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.remove-application-btn {
+  border: 1px solid #e74c3c;
+  background: white;
+  color: #e74c3c;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.remove-application-btn:hover {
+  background: #fff3f3;
+}

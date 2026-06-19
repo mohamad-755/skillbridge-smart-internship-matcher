@@ -234,3 +234,32 @@
   background: #4ecca3;
   color: #1a1a2e;
 }
+
+.apply-btn {
+  border: 1px solid #1a1a2e;
+  background: #1a1a2e;
+  color: white;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.apply-btn:hover {
+  background: #2d2d44;
+}
+
+.apply-btn.applied {
+  background: #4ecca3;
+  border-color: #4ecca3;
+  color: #1a1a2e;
+  cursor: default;
+}
+
+.apply-btn.applied {
+  background: #4ecca3;
+  border-color: #4ecca3;
+  color: #1a1a2e;
+  cursor: default;
+}
