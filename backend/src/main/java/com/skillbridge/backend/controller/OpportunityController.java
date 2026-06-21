@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import com.skillbridge.backend.model.Opportunity;
 import com.skillbridge.backend.service.OpportunityService;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/opportunities")
@@ -28,7 +29,7 @@ public class OpportunityController {
     }
 
     @PostMapping
-    public ResponseEntity<Opportunity> addOpportunity(@RequestBody Opportunity opportunity) {
+    public ResponseEntity<Opportunity> addOpportunity(@Valid @RequestBody Opportunity opportunity) {
         Opportunity saved = opportunityService.addOpportunity(opportunity);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
