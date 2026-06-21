@@ -10,7 +10,7 @@ import {
 } from '../api/api';
 import './Opportunities.css';
 
-function Opportunities() {
+function Opportunities({ user }) {
   const [opportunities, setOpportunities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -25,7 +25,6 @@ function Opportunities() {
     requiredSkills: '',
   });
   const [savedIds, setSavedIds] = useState([]);
-  const user = JSON.parse(localStorage.getItem('skillbridgeUser'));
   const [appliedIds, setAppliedIds] = useState([]);
 
   useEffect(() => {
@@ -138,14 +137,16 @@ function Opportunities() {
           <h1>Opportunities</h1>
           <p>{opportunities.length} opportunities available</p>
         </div>
-        <button className="add-btn" onClick={() => setShowForm(!showForm)}>
-          {showForm ? '✕ Cancel' : '+ Add Opportunity'}
-        </button>
+          {user?.role === 'ADMIN' && (
+            <button className="add-btn" onClick={() => setShowForm(!showForm)}>
+              {showForm ? 'Cancel' : '+ Add Opportunity'}
+            </button>
+          )}
       </div>
 
       {error && <p className="error">{error}</p>}
 
-      {showForm && (
+      {user?.role === 'ADMIN' && showForm && (
         <form className="opportunity-form" onSubmit={handleSubmit}>
           <h3>Add New Opportunity</h3>
           <div className="form-grid">
@@ -193,21 +194,27 @@ function Opportunities() {
 
               <div className="opp-actions">
                 <span className="opp-category">{opp.category}</span>
-                <button
-                  className={savedIds.includes(opp.id) ? 'save-btn saved' : 'save-btn'}
-                  onClick={() => handleToggleSave(opp.id)}
-                >
-                  {savedIds.includes(opp.id) ? 'Saved' : 'Save'}
-                </button>
 
-                <button
-                  className={appliedIds.includes(opp.id) ? 'apply-btn applied' : 'apply-btn'}
-                  onClick={() => handleApply(opp.id)}
-                  disabled={appliedIds.includes(opp.id)}
-                >
-                  {appliedIds.includes(opp.id) ? 'Applied' : 'Apply'}
-                </button>
+                {user?.role === 'STUDENT' && (
+                  <>
+                    <button
+                      className={savedIds.includes(opp.id) ? 'save-btn saved' : 'save-btn'}
+                      onClick={() => handleToggleSave(opp.id)}
+                    >
+                      {savedIds.includes(opp.id) ? 'Saved' : 'Save'}
+                    </button>
+
+                    <button
+                      className={appliedIds.includes(opp.id) ? 'apply-btn applied' : 'apply-btn'}
+                      onClick={() => handleApply(opp.id)}
+                      disabled={appliedIds.includes(opp.id)}
+                    >
+                      {appliedIds.includes(opp.id) ? 'Applied' : 'Apply'}
+                    </button>
+                  </>
+                )}
               </div>
+               
             </div>
             <p className="opp-description">{opp.description}</p>
             <div className="opp-footer">
