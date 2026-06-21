@@ -7,28 +7,21 @@ function SavedOpportunities() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const user = JSON.parse(localStorage.getItem('skillbridgeUser'));
 
-  useEffect(() => {
-    const fetchSavedOpportunities = async () => {
-      try {
-        const response = await getSavedOpportunities(user.id);
-        setSavedOpportunities(response.data);
-      } catch (err) {
-        setError('We could not load your saved opportunities right now.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (user?.id) {
-      fetchSavedOpportunities();
+ useEffect(() => {
+  const fetchSavedOpportunities = async () => {
+    try {
+      const response = await getSavedOpportunities();
+      setSavedOpportunities(response.data);
+    } catch (err) {
+      setError('We could not load your saved opportunities right now.');
+    } finally {
+      setLoading(false);
     }
-  }, [user?.id]);
+  };
 
-  if (loading) {
-    return <div className="loading">Loading saved opportunities...</div>;
-  }
+  fetchSavedOpportunities();
+}, []);
 
   return (
     <div className="saved-opportunities">

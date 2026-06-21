@@ -2,6 +2,8 @@ package com.skillbridge.backend.controller;
 
 import com.skillbridge.backend.dto.ApplicationResponse;
 import com.skillbridge.backend.model.ApplicationStatus;
+import com.skillbridge.backend.model.User;
+import com.skillbridge.backend.security.AuthContext;
 import com.skillbridge.backend.service.InternshipApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,47 +14,42 @@ import org.springframework.web.bind.annotation.*;
 public class InternshipApplicationController {
 
     private final InternshipApplicationService applicationService;
+    private final AuthContext authContext;
 
-    public InternshipApplicationController(InternshipApplicationService applicationService) {
+    public InternshipApplicationController(
+            InternshipApplicationService applicationService,
+            AuthContext authContext) {
         this.applicationService = applicationService;
+        this.authContext = authContext;
     }
 
-    @PostMapping("/{userId}/{opportunityId}")
-    public ResponseEntity<?> createApplication(
-            @PathVariable Integer userId,
+    @PostMapping("/me/{opportunityId}")
+    public ResponseEntity<ApplicationResponse> createApplication(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @PathVariable Integer opportunityId) {
-        try {
-            ApplicationResponse response = applicationService.createApplication(userId, opportunityId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        ApplicationResponse response = applicationService.createApplication(user.getId(), opportunityId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getApplicationsForUser(@PathVariable Integer userId) {
-        return ResponseEntity.ok(applicationService.getApplicationsForUser(userId));
+    @GetMapping("/me")
+    public ResponseEntity<?> getApplicationsForUser(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        return ResponseEntity.ok(applicationService.getApplicationsForUser(user.getId()));
     }
 
     @PutMapping("/{applicationId}/status")
-    public ResponseEntity<?> updateStatus(
+    public ResponseEntity<ApplicationResponse> updateStatus(
             @PathVariable Integer applicationId,
             @RequestParam ApplicationStatus status) {
-        try {
-            ApplicationResponse response = applicationService.updateStatus(applicationId, status);
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+        ApplicationResponse response = applicationService.updateStatus(applicationId, status);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{applicationId}")
     public ResponseEntity<?> deleteApplication(@PathVariable Integer applicationId) {
-        try {
-            applicationService.deleteApplication(applicationId);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+        applicationService.deleteApplication(applicationId);
+        return ResponseEntity.noContent().build();
     }
 }

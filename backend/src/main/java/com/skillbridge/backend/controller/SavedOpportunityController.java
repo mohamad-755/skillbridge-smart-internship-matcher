@@ -1,6 +1,8 @@
 package com.skillbridge.backend.controller;
 
 import com.skillbridge.backend.dto.SavedOpportunityResponse;
+import com.skillbridge.backend.model.User;
+import com.skillbridge.backend.security.AuthContext;
 import com.skillbridge.backend.service.SavedOpportunityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,37 +13,38 @@ import org.springframework.web.bind.annotation.*;
 public class SavedOpportunityController {
 
     private final SavedOpportunityService savedOpportunityService;
+    private final AuthContext authContext;
 
-    public SavedOpportunityController(SavedOpportunityService savedOpportunityService) {
+    public SavedOpportunityController(
+            SavedOpportunityService savedOpportunityService,
+            AuthContext authContext) {
         this.savedOpportunityService = savedOpportunityService;
+        this.authContext = authContext;
     }
 
-    @PostMapping("/{userId}/{opportunityId}")
-    public ResponseEntity<?> saveOpportunity(
-            @PathVariable Integer userId,
+    @PostMapping("/me/{opportunityId}")
+    public ResponseEntity<SavedOpportunityResponse> saveOpportunity(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @PathVariable Integer opportunityId) {
-        try {
-            SavedOpportunityResponse savedOpportunity = savedOpportunityService.saveOpportunity(userId, opportunityId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedOpportunity);
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        SavedOpportunityResponse savedOpportunity = savedOpportunityService.saveOpportunity(user.getId(),
+                opportunityId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedOpportunity);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getSavedOpportunities(@PathVariable Integer userId) {
-        return ResponseEntity.ok(savedOpportunityService.getSavedOpportunities(userId));
+    @GetMapping("/me")
+    public ResponseEntity<?> getSavedOpportunities(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        return ResponseEntity.ok(savedOpportunityService.getSavedOpportunities(user.getId()));
     }
 
-    @DeleteMapping("/{userId}/{opportunityId}")
+    @DeleteMapping("/me/{opportunityId}")
     public ResponseEntity<?> unsaveOpportunity(
-            @PathVariable Integer userId,
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @PathVariable Integer opportunityId) {
-        try {
-            savedOpportunityService.unsaveOpportunity(userId, opportunityId);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        savedOpportunityService.unsaveOpportunity(user.getId(), opportunityId);
+        return ResponseEntity.noContent().build();
     }
 }

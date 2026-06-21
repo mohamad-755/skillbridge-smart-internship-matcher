@@ -11,17 +11,13 @@ function Applications() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const user = JSON.parse(localStorage.getItem('skillbridgeUser'));
-
   useEffect(() => {
     fetchApplications();
   }, []);
 
   const fetchApplications = async () => {
-    if (!user?.id) return;
-
     try {
-      const response = await getApplications(user.id);
+      const response = await getApplications();
       setApplications(response.data);
     } catch (err) {
       setError('We could not load your applications right now.');
