@@ -29,7 +29,17 @@ function Register({ setUser }) {
       setUser(response.data);
       navigate('/');
     } catch (err) {
-      setError('We could not create your account. Please check your details and try again.');
+      const backendErrors = err.response?.data;
+
+      if (typeof backendErrors === 'string') {
+        setError(backendErrors);
+      } else if (backendErrors?.message) {
+        setError(backendErrors.message);
+      } else if (backendErrors && typeof backendErrors === 'object') {
+        setError(Object.values(backendErrors).join(' '));
+      } else {
+        setError('We could not create your account. Please check your details and try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -41,7 +51,7 @@ function Register({ setUser }) {
         <h1>Create account</h1>
         <p>Start using SkillBridge with your own account.</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
             <label>Full Name</label>
             <input

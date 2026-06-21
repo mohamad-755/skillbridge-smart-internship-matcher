@@ -26,8 +26,16 @@ function Login({ setUser }) {
       localStorage.setItem('skillbridgeUser', JSON.stringify(response.data));
       setUser(response.data);
       navigate('/');
-    } catch (err) {
-      setError('We could not log you in. Please check your email and password.');
+    }catch (err) {
+      const backendErrors = err.response?.data;
+
+      if (backendErrors && typeof backendErrors === 'object') {
+        setError(Object.values(backendErrors).join(' '));
+      } else if (typeof backendErrors === 'string') {
+        setError(backendErrors);
+      } else {
+        setError('We could not log you in. Please check your email and password.');
+      }
     } finally {
       setLoading(false);
     }
@@ -39,7 +47,7 @@ function Login({ setUser }) {
         <h1>Log in</h1>
         <p>Access your SkillBridge account.</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
             <label>Email</label>
             <input
