@@ -8,15 +8,18 @@ import com.skillbridge.backend.model.UserRole;
 import com.skillbridge.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.skillbridge.backend.security.JwtService;
 
 @Service
 public class AuthService {
 
+    private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final UserRepository userRepository;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -35,11 +38,8 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        return new AuthResponse(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail(),
-                savedUser.getRole());
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(user.getId(), user.getName(), user.getEmail(), user.getRole(), token);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -50,11 +50,8 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        return new AuthResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole());
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(user.getId(), user.getName(), user.getEmail(), user.getRole(), token);
     }
 
 }

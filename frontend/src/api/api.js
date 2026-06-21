@@ -11,6 +11,20 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+  const savedUser = localStorage.getItem('skillbridgeUser');
+
+  if (savedUser) {
+    const user = JSON.parse(savedUser);
+
+    if (user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+  }
+
+  return config;
+});
+
 // Students
 export const createStudent = (studentData) => api.post('/students', studentData);
 export const getStudentById = (id) => api.get(`/students/${id}`);
@@ -29,21 +43,20 @@ export const matchStudentWithOpportunity = (studentId, opportunityId) =>
 export const registerUser = (data) => api.post('/auth/register', data);
 export const loginUser = (data) => api.post('/auth/login', data);
 
-// Saved Opportunities
-export const getSavedOpportunities = (userId) => api.get(`/saved-opportunities/${userId}`);
+export const getSavedOpportunities = () => api.get('/saved-opportunities/me');
 
-export const saveOpportunity = (userId, opportunityId) =>
-  api.post(`/saved-opportunities/${userId}/${opportunityId}`);
+export const saveOpportunity = (opportunityId) =>
+  api.post(`/saved-opportunities/me/${opportunityId}`);
 
-export const unsaveOpportunity = (userId, opportunityId) =>
-  api.delete(`/saved-opportunities/${userId}/${opportunityId}`);
+export const unsaveOpportunity = (opportunityId) =>
+  api.delete(`/saved-opportunities/me/${opportunityId}`);
 
 // Applications
-export const createApplication = (userId, opportunityId) =>
-  api.post(`/applications/${userId}/${opportunityId}`);
+export const createApplication = (opportunityId) =>
+  api.post(`/applications/me/${opportunityId}`);
 
-export const getApplications = (userId) =>
-  api.get(`/applications/${userId}`);
+export const getApplications = () =>
+  api.get('/applications/me');
 
 export const updateApplicationStatus = (applicationId, status) =>
   api.put(`/applications/${applicationId}/status?status=${status}`);

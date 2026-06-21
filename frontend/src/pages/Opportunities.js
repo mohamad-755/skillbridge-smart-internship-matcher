@@ -48,7 +48,7 @@ function Opportunities({ user }) {
     if (!user?.id) return;
 
     try {
-      const response = await getSavedOpportunities(user.id);
+      const response = await getSavedOpportunities();
       setSavedIds(response.data.map((item) => item.opportunityId));
     } catch (err) {
       setError('We could not load your saved opportunities right now.');
@@ -91,10 +91,10 @@ function Opportunities({ user }) {
 
     try {
       if (savedIds.includes(opportunityId)) {
-        await unsaveOpportunity(user.id, opportunityId);
+        await unsaveOpportunity(opportunityId);
         setSavedIds(savedIds.filter((id) => id !== opportunityId));
       } else {
-        await saveOpportunity(user.id, opportunityId);
+        await saveOpportunity(opportunityId);
         setSavedIds([...savedIds, opportunityId]);
       }
     } catch (err) {
@@ -109,7 +109,7 @@ function Opportunities({ user }) {
     }
 
     try {
-      await createApplication(user.id, opportunityId);
+      await createApplication(opportunityId);
       setAppliedIds([...appliedIds, opportunityId]);
       setError('');
     } catch (err) {
@@ -121,7 +121,7 @@ function Opportunities({ user }) {
     if (!user?.id) return;
 
     try {
-      const response = await getApplications(user.id);
+      const response = await getApplications();
       setAppliedIds(response.data.map((item) => item.opportunityId));
     } catch (err) {
       setError('We could not load your applications right now.');

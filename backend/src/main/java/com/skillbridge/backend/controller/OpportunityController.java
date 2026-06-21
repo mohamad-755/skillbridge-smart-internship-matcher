@@ -7,15 +7,19 @@ import com.skillbridge.backend.model.Opportunity;
 import com.skillbridge.backend.service.OpportunityService;
 import java.util.List;
 import jakarta.validation.Valid;
+import com.skillbridge.backend.security.AuthContext;
+import com.skillbridge.backend.model.User;
 
 @RestController
 @RequestMapping("/opportunities")
 public class OpportunityController {
 
     private final OpportunityService opportunityService;
+    private final AuthContext authContext;
 
-    public OpportunityController(OpportunityService opportunityService) {
+    public OpportunityController(OpportunityService opportunityService, AuthContext authContext) {
         this.opportunityService = opportunityService;
+        this.authContext = authContext;
     }
 
     @GetMapping
@@ -30,9 +34,10 @@ public class OpportunityController {
 
     @PostMapping
     public ResponseEntity<Opportunity> addOpportunity(
-            @RequestParam Integer userId,
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @Valid @RequestBody Opportunity opportunity) {
-        Opportunity saved = opportunityService.addOpportunity(userId, opportunity);
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        Opportunity saved = opportunityService.addOpportunity(user.getId(), opportunity);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
