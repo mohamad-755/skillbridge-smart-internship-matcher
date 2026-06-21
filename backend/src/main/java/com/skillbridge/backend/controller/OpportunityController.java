@@ -29,8 +29,10 @@ public class OpportunityController {
     }
 
     @PostMapping
-    public ResponseEntity<Opportunity> addOpportunity(@Valid @RequestBody Opportunity opportunity) {
-        Opportunity saved = opportunityService.addOpportunity(opportunity);
+    public ResponseEntity<Opportunity> addOpportunity(
+            @RequestParam Integer userId,
+            @Valid @RequestBody Opportunity opportunity) {
+        Opportunity saved = opportunityService.addOpportunity(userId, opportunity);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 

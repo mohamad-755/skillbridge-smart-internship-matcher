@@ -5,14 +5,21 @@ import com.skillbridge.backend.repository.OpportunityRepository;
 import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
+import com.skillbridge.backend.model.User;
+import com.skillbridge.backend.model.UserRole;
+import com.skillbridge.backend.repository.UserRepository;
 
 @Service
 public class OpportunityService {
 
     private final OpportunityRepository opportunityRepository;
+    private final UserRepository userRepository;
 
-    public OpportunityService(OpportunityRepository opportunityRepository) {
+    public OpportunityService(
+            OpportunityRepository opportunityRepository,
+            UserRepository userRepository) {
         this.opportunityRepository = opportunityRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Opportunity> getAllOpportunities() {
@@ -23,7 +30,14 @@ public class OpportunityService {
         return opportunityRepository.findById(id).orElse(null);
     }
 
-    public Opportunity addOpportunity(Opportunity opportunity) {
+    public Opportunity addOpportunity(Integer userId, Opportunity opportunity) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (user.getRole() != UserRole.ADMIN) {
+            throw new SecurityException("Only admins can create opportunities");
+        }
+
         return opportunityRepository.save(opportunity);
     }
 

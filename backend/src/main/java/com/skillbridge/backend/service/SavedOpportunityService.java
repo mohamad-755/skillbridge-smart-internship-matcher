@@ -3,6 +3,7 @@ package com.skillbridge.backend.service;
 import com.skillbridge.backend.model.Opportunity;
 import com.skillbridge.backend.model.SavedOpportunity;
 import com.skillbridge.backend.model.User;
+import com.skillbridge.backend.model.UserRole;
 import com.skillbridge.backend.repository.OpportunityRepository;
 import com.skillbridge.backend.repository.SavedOpportunityRepository;
 import com.skillbridge.backend.repository.UserRepository;
@@ -36,6 +37,10 @@ public class SavedOpportunityService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (user.getRole() != UserRole.STUDENT) {
+            throw new SecurityException("Only students can save opportunities");
+        }
 
         Opportunity opportunity = opportunityRepository.findById(opportunityId)
                 .orElseThrow(() -> new IllegalArgumentException("Opportunity not found"));
