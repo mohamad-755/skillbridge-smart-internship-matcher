@@ -46,7 +46,7 @@ function App() {
             path="/opportunities"
             element={
               <ProtectedRoute user={user}>
-                <Opportunities />
+                <Opportunities user={user} />
               </ProtectedRoute>
             }
           />
@@ -55,7 +55,11 @@ function App() {
             path="/saved"
             element={
               <ProtectedRoute user={user}>
-                <SavedOpportunities />
+                {user?.role === 'STUDENT' ? (
+                  <SavedOpportunities user={user} />
+                ) : (
+                  <Opportunities user={user} />
+                )}
               </ProtectedRoute>
             }
           />
@@ -64,7 +68,11 @@ function App() {
             path="/applications"
             element={
               <ProtectedRoute user={user}>
-                <Applications />
+                {user?.role === 'STUDENT' ? (
+                  <Applications user={user} />
+                ) : (
+                  <Opportunities user={user} />
+                )}
               </ProtectedRoute>
             }
           />
