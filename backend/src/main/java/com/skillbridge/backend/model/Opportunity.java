@@ -2,6 +2,8 @@ package com.skillbridge.backend.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 public class Opportunity {
@@ -10,13 +12,25 @@ public class Opportunity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Title is required")
     private String title;
+
+    @NotBlank(message = "Organization is required")
     private String organization;
+
+    @NotBlank(message = "Category is required")
     private String category;
+
+    @NotBlank(message = "Location is required")
     private String location;
+
+    @NotBlank(message = "Deadline is required")
     private String deadline;
+
+    @NotBlank(message = "Description is required")
     private String description;
 
+    @NotEmpty(message = "At least one required skill is required")
     @ElementCollection
     private List<String> requiredSkills;
 

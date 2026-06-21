@@ -2,6 +2,8 @@ package com.skillbridge.backend.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 public class Student {
@@ -10,14 +12,23 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Major is required")
     private String major;
+
+    @NotBlank(message = "Academic year is required")
     private String academicYear;
+
+    @NotBlank(message = "Location is required")
     private String location;
 
+    @NotEmpty(message = "At least one skill is required")
     @ElementCollection
     private List<String> skills;
 
+    @NotEmpty(message = "At least one interest is required")
     @ElementCollection
     private List<String> interests;
 
