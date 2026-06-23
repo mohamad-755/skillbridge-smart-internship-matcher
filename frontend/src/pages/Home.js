@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createStudent, getMyProfile } from '../api/api';
 import { useNavigate } from 'react-router-dom';
-import { createStudent } from '../api/api';
 import './Home.css';
 
 function Home() {
@@ -16,6 +16,28 @@ function Home() {
     skills: '',
     interests: '',
   });
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const response = await getMyProfile();
+        const profile = response.data;
+
+        setForm({
+          name: profile.name || '',
+          major: profile.major || '',
+          academicYear: profile.academicYear || '',
+          location: profile.location || '',
+          skills: profile.skills ? profile.skills.join(', ') : '',
+          interests: profile.interests ? profile.interests.join(', ') : '',
+        });
+      } catch (err) {
+        // No profile yet, keep the form empty.
+      }
+    };
+
+    loadProfile();
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,7 +61,11 @@ function Home() {
       await createStudent(studentData);
       navigate('/results');
     } catch (err) {
-      setError('We could not submit your profile right now. Please check your connection and try again.');
+      if (err.response?.status === 403 || err.response?.status === 500) {
+        setError('Only students can create a profile and view matches.');
+      } else {
+        setError('We could not submit your profile right now. Please check your connection and try again.');
+      }
     } finally {
       setLoading(false);
     }
