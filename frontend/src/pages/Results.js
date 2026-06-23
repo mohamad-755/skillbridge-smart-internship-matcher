@@ -1,37 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getMatchesForStudent } from '../api/api';
+import { useNavigate } from 'react-router-dom';
+import { getMyMatches } from '../api/api';
 import './Results.css';
 
 function Results() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const studentId = location.state?.studentId;
 
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [expanded, setExpanded] = useState(null);
 
-  useEffect(() => {
-    if (!studentId) {
-      navigate('/');
-      return;
-    }
-
+  uuseEffect(() => {
     const fetchMatches = async () => {
       try {
-        const response = await getMatchesForStudent(studentId);
+        const response = await getMyMatches();
         setResults(response.data);
       } catch (err) {
-        setError('We could not load your matches right now. Please refresh the page or try again later.');
+        setError('We could not load your matches right now. Please complete your profile and try again.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchMatches();
-  }, [studentId, navigate]);
+  }, []);
 
   const getScoreColor = (score) => {
     if (score >= 70) return '#4ecca3';

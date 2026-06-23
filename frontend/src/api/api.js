@@ -26,7 +26,7 @@ api.interceptors.request.use((config) => {
 });
 
 // Students
-export const createStudent = (studentData) => api.post('/students', studentData);
+export const createStudent = (studentData) => api.post('/students/me', studentData);
 export const getStudentById = (id) => api.get(`/students/${id}`);
 export const getAllStudents = () => api.get('/students');
 
@@ -36,6 +36,7 @@ export const createOpportunity = (data) => api.post('/opportunities', data);
 
 // Matching
 export const getMatchesForStudent = (studentId) => api.get(`/match/${studentId}/all`);
+export const getMyMatches = () => api.get('/m atch/me');
 export const matchStudentWithOpportunity = (studentId, opportunityId) => 
   api.get(`/match/${studentId}/${opportunityId}`);
 
