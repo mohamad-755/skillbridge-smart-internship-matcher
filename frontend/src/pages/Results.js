@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMyMatches } from '../api/api';
+import { getErrorMessage } from '../api/errorUtils';
 import './Results.css';
 
 function Results() {
@@ -17,7 +18,12 @@ function Results() {
         const response = await getMyMatches();
         setResults(response.data);
       } catch (err) {
-        setError('We could not load your matches right now. Please complete your profile and try again.');
+        setError(
+          getErrorMessage(
+            err,
+            'We could not load your matches right now. Please complete your profile and try again.'
+          )
+        );
       } finally {
         setLoading(false);
       }

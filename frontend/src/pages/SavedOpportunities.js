@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSavedOpportunities } from '../api/api';
+import { getErrorMessage } from '../api/errorUtils';
 import './SavedOpportunities.css';
 
 function SavedOpportunities() {
@@ -14,7 +15,12 @@ function SavedOpportunities() {
       const response = await getSavedOpportunities();
       setSavedOpportunities(response.data);
     } catch (err) {
-      setError('We could not load your saved opportunities right now.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not load your saved opportunities right now.'
+        )
+      );
     } finally {
       setLoading(false);
     }

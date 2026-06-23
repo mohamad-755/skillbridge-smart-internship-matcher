@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createStudent, getMyProfile } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import { getErrorMessage } from '../api/errorUtils';
 
 function Home() {
   const navigate = useNavigate();
@@ -62,8 +63,10 @@ function Home() {
       navigate('/results');
     } catch (err) {
       setError(
-        err.response?.data?.message ||
+        getErrorMessage(
+          err,
           'We could not submit your profile right now. Please check your connection and try again.'
+        )
       );
     } finally {
       setLoading(false);

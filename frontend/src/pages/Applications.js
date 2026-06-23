@@ -4,6 +4,7 @@ import {
   updateApplicationStatus,
   deleteApplication,
 } from '../api/api';
+import { getErrorMessage } from '../api/errorUtils';
 import './Applications.css';
 
 function Applications() {
@@ -20,7 +21,12 @@ function Applications() {
       const response = await getApplications();
       setApplications(response.data);
     } catch (err) {
-      setError('We could not load your applications right now.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not load your applications right now.'
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -35,7 +41,12 @@ function Applications() {
         )
       );
     } catch (err) {
-      setError('We could not update this application status.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not update this application status.'
+        )
+      );
     }
   };
 
@@ -44,7 +55,12 @@ function Applications() {
       await deleteApplication(applicationId);
       setApplications(applications.filter((application) => application.id !== applicationId));
     } catch (err) {
-      setError('We could not remove this application.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not remove this application.'
+        )
+      );
     }
   };
 
