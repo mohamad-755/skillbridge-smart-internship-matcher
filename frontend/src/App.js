@@ -10,6 +10,7 @@ import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import SavedOpportunities from './pages/SavedOpportunities';
 import Applications from './pages/Applications';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -28,7 +29,7 @@ function App() {
             path="/"
             element={
               <ProtectedRoute user={user}>
-                <Home />
+                {user?.role === 'ADMIN' ? <AdminDashboard user={user} /> : <Home />}
               </ProtectedRoute>
             }
           />
@@ -47,6 +48,19 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <Opportunities user={user} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute user={user}>
+                {user?.role === 'ADMIN' ? (
+                  <AdminDashboard user={user} />
+                ) : (
+                  <Opportunities user={user} />
+                )}
               </ProtectedRoute>
             }
           />

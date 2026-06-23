@@ -18,7 +18,12 @@ function Navbar({ user, setUser }) {
       </div>
 
       <div className="navbar-links">
-        <Link to="/">Find Matches</Link>
+        {user?.role === 'ADMIN' ? (
+          <Link to="/admin">Admin Dashboard</Link>
+        ) : (
+          <Link to="/">Find Matches</Link>
+        )}
+
         <Link to="/opportunities">Opportunities</Link>
 
         {user?.role === 'STUDENT' && (
