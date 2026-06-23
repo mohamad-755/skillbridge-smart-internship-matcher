@@ -27,6 +27,7 @@ api.interceptors.request.use((config) => {
 
 // Students
 export const createStudent = (studentData) => api.post('/students/me', studentData);
+export const getMyProfile = () => api.get('/students/me');
 export const getStudentById = (id) => api.get(`/students/${id}`);
 export const getAllStudents = () => api.get('/students');
 

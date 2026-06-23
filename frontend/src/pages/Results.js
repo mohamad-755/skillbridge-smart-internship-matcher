@@ -11,7 +11,7 @@ function Results() {
   const [error, setError] = useState('');
   const [expanded, setExpanded] = useState(null);
 
-  uuseEffect(() => {
+  useEffect(() => {
     const fetchMatches = async () => {
       try {
         const response = await getMyMatches();
