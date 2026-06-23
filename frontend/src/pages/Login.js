@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/api';
+import { getErrorMessage } from '../api/errorUtils';
 import './Login.css';
 
 function Login({ setUser }) {
@@ -26,16 +27,13 @@ function Login({ setUser }) {
       localStorage.setItem('skillbridgeUser', JSON.stringify(response.data));
       setUser(response.data);
       navigate('/');
-    }catch (err) {
-      const backendErrors = err.response?.data;
-
-      if (backendErrors && typeof backendErrors === 'object') {
-        setError(Object.values(backendErrors).join(' '));
-      } else if (typeof backendErrors === 'string') {
-        setError(backendErrors);
-      } else {
-        setError('We could not log you in. Please check your email and password.');
-      }
+    } catch (err) {
+      setError(
+        getErrorMessage(
+          err,
+          'We could not log you in. Please check your email and password.'
+        )
+      );
     } finally {
       setLoading(false);
     }

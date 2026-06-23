@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../api/api';
+import { getErrorMessage } from '../api/errorUtils';
 import './Register.css';
 
 function Register({ setUser }) {
@@ -29,17 +30,12 @@ function Register({ setUser }) {
       setUser(response.data);
       navigate('/');
     } catch (err) {
-      const backendErrors = err.response?.data;
-
-      if (typeof backendErrors === 'string') {
-        setError(backendErrors);
-      } else if (backendErrors?.message) {
-        setError(backendErrors.message);
-      } else if (backendErrors && typeof backendErrors === 'object') {
-        setError(Object.values(backendErrors).join(' '));
-      } else {
-        setError('We could not create your account. Please check your details and try again.');
-      }
+      setError(
+        getErrorMessage(
+          err,
+          'We could not create your account. Please check your details and try again.'
+        )
+      );
     } finally {
       setLoading(false);
     }

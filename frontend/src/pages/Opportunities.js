@@ -8,6 +8,7 @@ import {
   createApplication,
   getApplications,
 } from '../api/api';
+import { getErrorMessage } from '../api/errorUtils';
 import './Opportunities.css';
 
 function Opportunities({ user }) {
@@ -42,7 +43,12 @@ function Opportunities({ user }) {
       const response = await getAllOpportunities();
       setOpportunities(response.data);
     } catch (err) {
-      setError('We could not load opportunities right now. Please refresh the page or try again later.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not load opportunities right now. Please refresh the page or try again later.'
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -55,7 +61,12 @@ function Opportunities({ user }) {
       const response = await getSavedOpportunities();
       setSavedIds(response.data.map((item) => item.opportunityId));
     } catch (err) {
-      setError('We could not load your saved opportunities right now.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not load your saved opportunities right now.'
+        )
+      );
     }
   };
 
@@ -83,7 +94,12 @@ function Opportunities({ user }) {
       });
       fetchOpportunities();
     } catch (err) {
-      setError('We could not add this opportunity. Please check the details and try again.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not add this opportunity. Please check the details and try again.'
+        )
+      );
     }
   };
 
@@ -102,7 +118,12 @@ function Opportunities({ user }) {
         setSavedIds([...savedIds, opportunityId]);
       }
     } catch (err) {
-      setError('We could not update your saved opportunities. Please try again.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not update your saved opportunities. Please try again.'
+        )
+      );
     }
   };
 
@@ -117,7 +138,12 @@ function Opportunities({ user }) {
       setAppliedIds([...appliedIds, opportunityId]);
       setError('');
     } catch (err) {
-      setError('We could not create this application. It may already exist.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not create this application. It may already exist.'
+        )
+      );
     }
   };
 
@@ -128,7 +154,12 @@ function Opportunities({ user }) {
       const response = await getApplications();
       setAppliedIds(response.data.map((item) => item.opportunityId));
     } catch (err) {
-      setError('We could not load your applications right now.');
+      setError(
+        getErrorMessage(
+          err,
+          'We could not load your applications right now.'
+        )
+      );
     }
   };
 
