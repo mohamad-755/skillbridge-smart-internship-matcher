@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';import {
+import React, { useEffect, useMemo, useState } from 'react';
+import {
   getAllOpportunities,
   createOpportunity,
   getSavedOpportunities,
@@ -256,8 +257,14 @@ function Opportunities({ user }) {
         </form>
       )}
 
-      <div className="opportunities-list">
-        {filteredOpportunities.map((opp) => (
+      {filteredOpportunities.length === 0 ? (
+          <div className="empty-state">
+            <h2>No opportunities found</h2>
+            <p>Try changing your search, filters, or sort options.</p>
+          </div>
+        ) : (
+          <div className="opportunities-list">
+            {filteredOpportunities.map((opp) => (
           <div key={opp.id} className="opportunity-card">
             <div className="opp-top">
               <div>
@@ -304,7 +311,8 @@ function Opportunities({ user }) {
           </div>
         ))}
       </div>
-    </div>
+    )}
+  </div>
   );
 }
 
