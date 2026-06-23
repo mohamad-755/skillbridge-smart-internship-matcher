@@ -1,9 +1,12 @@
 package com.skillbridge.backend.controller;
 
-import com.skillbridge.backend.service.MatchService;
 import com.skillbridge.backend.dto.MatchResult;
+import com.skillbridge.backend.model.User;
+import com.skillbridge.backend.security.AuthContext;
+import com.skillbridge.backend.service.MatchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -11,9 +14,19 @@ import java.util.List;
 public class MatchController {
 
     private final MatchService matchService;
+    private final AuthContext authContext;
 
-    public MatchController(MatchService matchService) {
+    public MatchController(MatchService matchService, AuthContext authContext) {
         this.matchService = matchService;
+        this.authContext = authContext;
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<MatchResult>> getMyMatches(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        List<MatchResult> results = matchService.getRecommendationsForUser(user.getId());
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping("/{studentId}/{opportunityId}")

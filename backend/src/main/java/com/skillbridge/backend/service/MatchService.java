@@ -51,6 +51,21 @@ public class MatchService {
         return results;
     }
 
+    public List<MatchResult> getRecommendationsForUser(Integer userId) {
+        Student student = studentService.getStudentByUserId(userId);
+
+        List<MatchResult> results = new ArrayList<>();
+
+        for (Opportunity opportunity : opportunityService.getAllOpportunities()) {
+            MatchResult result = calculateMatch(student, opportunity);
+            results.add(result);
+        }
+
+        results.sort(Comparator.comparingInt(MatchResult::getMatchScore).reversed());
+
+        return results;
+    }
+
     private MatchResult calculateMatch(Student student, Opportunity opportunity) {
         List<String> matchedSkills = new ArrayList<>();
         List<String> missingSkills = new ArrayList<>();

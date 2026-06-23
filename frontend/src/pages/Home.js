@@ -36,9 +36,8 @@ function Home() {
         interests: form.interests.split(',').map((s) => s.trim()).filter(Boolean),
       };
 
-      const response = await createStudent(studentData);
-      const studentId = response.data.id;
-      navigate('/results', { state: { studentId } });
+      await createStudent(studentData);
+      navigate('/results');
     } catch (err) {
       setError('We could not submit your profile right now. Please check your connection and try again.');
     } finally {
