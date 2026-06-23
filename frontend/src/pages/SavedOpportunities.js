@@ -27,7 +27,11 @@ function SavedOpportunities() {
   };
 
   fetchSavedOpportunities();
-}, []);
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading saved opportunities...</div>;
+  }
 
   return (
     <div className="saved-opportunities">

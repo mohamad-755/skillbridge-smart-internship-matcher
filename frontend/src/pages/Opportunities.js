@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   getAllOpportunities,
   createOpportunity,
@@ -32,13 +32,7 @@ function Opportunities({ user }) {
   const [savedIds, setSavedIds] = useState([]);
   const [appliedIds, setAppliedIds] = useState([]);
 
-  useEffect(() => {
-    fetchOpportunities();
-    fetchSavedOpportunities();
-    fetchApplications();
-  }, []);
-
-  const fetchOpportunities = async () => {
+  const fetchOpportunities = useCallback(async () => {
     try {
       const response = await getAllOpportunities();
       setOpportunities(response.data);
@@ -52,9 +46,9 @@ function Opportunities({ user }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchSavedOpportunities = async () => {
+  const fetchSavedOpportunities = useCallback(async () => {
     if (!user?.id) return;
 
     try {
@@ -68,7 +62,7 @@ function Opportunities({ user }) {
         )
       );
     }
-  };
+  }, [user?.id]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -147,7 +141,7 @@ function Opportunities({ user }) {
     }
   };
 
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     if (!user?.id) return;
 
     try {
@@ -161,7 +155,13 @@ function Opportunities({ user }) {
         )
       );
     }
-  };
+  }, [user?.id]);
+
+  useEffect(() => {
+    fetchOpportunities();
+    fetchSavedOpportunities();
+    fetchApplications();
+  }, [fetchOpportunities, fetchSavedOpportunities, fetchApplications]);
 
   const categories = useMemo(() => {
     return [...new Set(opportunities.map((opp) => opp.category).filter(Boolean))];
@@ -250,6 +250,8 @@ function Opportunities({ user }) {
           <option value="category">Sort by category</option>
         </select>
       </div>
+
+      {error && <p className="error">{error}</p>}
 
       {user?.role === 'ADMIN' && showForm && (
         <form className="opportunity-form" onSubmit={handleSubmit}>
