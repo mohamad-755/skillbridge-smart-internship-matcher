@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import {
+import React, { useEffect, useMemo, useState } from 'react';import {
   getAllOpportunities,
   createOpportunity,
   getSavedOpportunities,
@@ -12,6 +11,10 @@ import './Opportunities.css';
 
 function Opportunities({ user }) {
   const [opportunities, setOpportunities] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [locationFilter, setLocationFilter] = useState('');
+  const [sortBy, setSortBy] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
@@ -128,6 +131,48 @@ function Opportunities({ user }) {
     }
   };
 
+  const categories = useMemo(() => {
+    return [...new Set(opportunities.map((opp) => opp.category).filter(Boolean))];
+  }, [opportunities]);
+
+  const locations = useMemo(() => {
+    return [...new Set(opportunities.map((opp) => opp.location).filter(Boolean))];
+  }, [opportunities]);
+
+  const filteredOpportunities = useMemo(() => {
+    const search = searchTerm.toLowerCase();
+
+    const filtered = opportunities.filter((opp) => {
+      const matchesSearch =
+        !search ||
+        opp.title.toLowerCase().includes(search) ||
+        opp.organization.toLowerCase().includes(search) ||
+        opp.category.toLowerCase().includes(search) ||
+        opp.location.toLowerCase().includes(search) ||
+        opp.description.toLowerCase().includes(search) ||
+        opp.requiredSkills.some((skill) => skill.toLowerCase().includes(search));
+
+      const matchesCategory = !categoryFilter || opp.category === categoryFilter;
+      const matchesLocation = !locationFilter || opp.location === locationFilter;
+
+      return matchesSearch && matchesCategory && matchesLocation;
+    });
+
+    if (sortBy === 'deadline') {
+      return [...filtered].sort((a, b) => a.deadline.localeCompare(b.deadline));
+    }
+
+    if (sortBy === 'title') {
+      return [...filtered].sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    if (sortBy === 'category') {
+      return [...filtered].sort((a, b) => a.category.localeCompare(b.category));
+    }
+
+    return filtered;
+  }, [opportunities, searchTerm, categoryFilter, locationFilter, sortBy]);
+
   if (loading) return <div className="loading">Loading opportunities...</div>;
 
   return (
@@ -135,7 +180,7 @@ function Opportunities({ user }) {
       <div className="opportunities-header">
         <div>
           <h1>Opportunities</h1>
-          <p>{opportunities.length} opportunities available</p>
+          <p>{filteredOpportunities.length} of {opportunities.length} opportunities shown</p>
         </div>
           {user?.role === 'ADMIN' && (
             <button className="add-btn" onClick={() => setShowForm(!showForm)}>
@@ -144,7 +189,35 @@ function Opportunities({ user }) {
           )}
       </div>
 
-      {error && <p className="error">{error}</p>}
+      <div className="opportunity-controls">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by title, company, skill, or location"
+        />
+
+        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+          <option value="">All categories</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+
+        <select value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}>
+          <option value="">All locations</option>
+          {locations.map((location) => (
+            <option key={location} value={location}>{location}</option>
+          ))}
+        </select>
+
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="">Default order</option>
+          <option value="deadline">Sort by deadline</option>
+          <option value="title">Sort by title</option>
+          <option value="category">Sort by category</option>
+        </select>
+      </div>
 
       {user?.role === 'ADMIN' && showForm && (
         <form className="opportunity-form" onSubmit={handleSubmit}>
@@ -184,7 +257,7 @@ function Opportunities({ user }) {
       )}
 
       <div className="opportunities-list">
-        {opportunities.map((opp) => (
+        {filteredOpportunities.map((opp) => (
           <div key={opp.id} className="opportunity-card">
             <div className="opp-top">
               <div>

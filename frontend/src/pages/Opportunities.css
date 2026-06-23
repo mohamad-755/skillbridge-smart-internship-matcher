@@ -263,3 +263,32 @@
   color: #1a1a2e;
   cursor: default;
 }
+
+.opportunity-controls {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.opportunity-controls input,
+.opportunity-controls select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: white;
+}
+
+.opportunity-controls input:focus,
+.opportunity-controls select:focus {
+  outline: none;
+  border-color: #4ecca3;
+}
+
+@media (max-width: 800px) {
+  .opportunity-controls {
+    grid-template-columns: 1fr;
+  }
+}
