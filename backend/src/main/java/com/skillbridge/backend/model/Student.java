@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Student {
@@ -31,6 +32,10 @@ public class Student {
     @NotEmpty(message = "At least one interest is required")
     @ElementCollection
     private List<String> interests;
+
+    @JsonIgnore
+    @OneToOne
+    private User user;
 
     public Student() {
     }
@@ -100,5 +105,13 @@ public class Student {
 
     public void setInterests(List<String> interests) {
         this.interests = interests;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
