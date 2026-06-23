@@ -12,19 +12,19 @@ function Results() {
   const [expanded, setExpanded] = useState(null);
 
   uuseEffect(() => {
-  const fetchMatches = async () => {
-    try {
-      const response = await getMyMatches();
-      setResults(response.data);
-    } catch (err) {
-      setError('We could not load your matches right now. Please complete your profile and try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchMatches = async () => {
+      try {
+        const response = await getMyMatches();
+        setResults(response.data);
+      } catch (err) {
+        setError('We could not load your matches right now. Please complete your profile and try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchMatches();
-}, []);
+    fetchMatches();
+  }, []);
 
   const getScoreColor = (score) => {
     if (score >= 70) return '#4ecca3';
