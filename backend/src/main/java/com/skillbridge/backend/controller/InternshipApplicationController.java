@@ -41,15 +41,20 @@ public class InternshipApplicationController {
 
     @PutMapping("/{applicationId}/status")
     public ResponseEntity<ApplicationResponse> updateStatus(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @PathVariable Integer applicationId,
             @RequestParam ApplicationStatus status) {
-        ApplicationResponse response = applicationService.updateStatus(applicationId, status);
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        ApplicationResponse response = applicationService.updateStatus(user.getId(), applicationId, status);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{applicationId}")
-    public ResponseEntity<?> deleteApplication(@PathVariable Integer applicationId) {
-        applicationService.deleteApplication(applicationId);
+    public ResponseEntity<?> deleteApplication(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+            @PathVariable Integer applicationId) {
+        User user = authContext.getUserFromAuthorizationHeader(authorizationHeader);
+        applicationService.deleteApplication(user.getId(), applicationId);
         return ResponseEntity.noContent().build();
     }
 }

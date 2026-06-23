@@ -61,21 +61,27 @@ public class InternshipApplicationService {
                 .collect(Collectors.toList());
     }
 
-    public ApplicationResponse updateStatus(Integer applicationId, ApplicationStatus status) {
+    public ApplicationResponse updateStatus(Integer userId, Integer applicationId, ApplicationStatus status) {
         InternshipApplication application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found"));
 
+        if (!application.getUser().getId().equals(userId)) {
+            throw new SecurityException("You can only update your own applications");
+        }
         application.setStatus(status);
 
         return toResponse(applicationRepository.save(application));
     }
 
-    public void deleteApplication(Integer applicationId) {
-        if (!applicationRepository.existsById(applicationId)) {
-            throw new IllegalArgumentException("Application not found");
+    public void deleteApplication(Integer userId, Integer applicationId) {
+        InternshipApplication application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Application not found"));
+
+        if (!application.getUser().getId().equals(userId)) {
+            throw new SecurityException("You can only delete your own applications");
         }
 
-        applicationRepository.deleteById(applicationId);
+        applicationRepository.delete(application);
     }
 
     private ApplicationResponse toResponse(InternshipApplication application) {
