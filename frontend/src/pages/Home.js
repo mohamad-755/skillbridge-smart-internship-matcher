@@ -61,11 +61,10 @@ function Home() {
       await createStudent(studentData);
       navigate('/results');
     } catch (err) {
-      if (err.response?.status === 403 || err.response?.status === 500) {
-        setError('Only students can create a profile and view matches.');
-      } else {
-        setError('We could not submit your profile right now. Please check your connection and try again.');
-      }
+      setError(
+        err.response?.data?.message ||
+          'We could not submit your profile right now. Please check your connection and try again.'
+      );
     } finally {
       setLoading(false);
     }
