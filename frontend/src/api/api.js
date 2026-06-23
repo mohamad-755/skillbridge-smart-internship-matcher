@@ -36,7 +36,7 @@ export const createOpportunity = (data) => api.post('/opportunities', data);
 
 // Matching
 export const getMatchesForStudent = (studentId) => api.get(`/match/${studentId}/all`);
-export const getMyMatches = () => api.get('/m atch/me');
+export const getMyMatches = () => api.get('/match/me');
 export const matchStudentWithOpportunity = (studentId, opportunityId) => 
   api.get(`/match/${studentId}/${opportunityId}`);
 
